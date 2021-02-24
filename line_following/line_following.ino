@@ -1,40 +1,40 @@
 // L293D Connection
-const int motor1A = 17;
-const int motor2A = 16;
-const int motor3A = 6;
-const int motor4A = 12;
+const int LM1 = 17; // LEFT MOTOR 1 = 1A
+const int LM2 = 16; // LEFT MOTOR 2 = 2A
+const int RM1 = 6;  // RIGHT MOTOR 1 = 3A
+const int RM2 = 12; // RIGHT Motor 2 = 4A
 
-// Sensor Connection
-const int LEYE = 2;
-const int REYE = 11;
+// IR Sensor Connection
+const int LEYE = 2; // LEFT IR SENSOR
+const int REYE = 11; // RIGHT IR SENSOR
 
 
-int LWF() { // LEFT WHEEL FORWARD
-  analogWrite(motor1A, 250);
-  analogWrite(motor2A, 0);
-  analogWrite(motor3A, 0);
-  analogWrite(motor4A, 0);
+int right_turn() { // TURN RIGHT
+  analogWrite(LM1, 250);
+  analogWrite(LM2, 0);
+  analogWrite(RM1, 0);
+  analogWrite(RM2, 150);
 }
 
-int RWF() { // RIGHT WHEEL FORWARD
-  analogWrite(motor1A, 0);
-  analogWrite(motor2A, 0);
-  analogWrite(motor3A, 250);
-  analogWrite(motor4A, 0);
+int left_turn() { // TURN LEFT
+  analogWrite(LM1, 0);
+  analogWrite(LM2, 150);
+  analogWrite(RM1, 250);
+  analogWrite(RM2, 0);
 }
 
-int AWF() { // ALL WHEEL FORWARD
-  analogWrite(motor1A, 250);
-  analogWrite(motor2A, 0);
-  analogWrite(motor3A, 250);
-  analogWrite(motor4A, 0);
+int move_forward() { // MOVE STRAIGHT
+  analogWrite(LM1, 250);
+  analogWrite(LM2, 0);
+  analogWrite(RM1, 250);
+  analogWrite(RM2, 0);
 }
 
-int STOP() { // STOP BUGGY
-  analogWrite(motor1A, 0);
-  analogWrite(motor2A, 0);
-  analogWrite(motor3A, 0);
-  analogWrite(motor4A, 0);
+int stop_all() { // STOP BUGGY
+  analogWrite(LM1, 0);
+  analogWrite(LM2, 0);
+  analogWrite(RM1, 0);
+  analogWrite(RM2, 0);
 }
 
 void setup() {
@@ -43,11 +43,10 @@ void setup() {
   pinMode(LEYE, INPUT);
   pinMode(REYE, INPUT);
 
-  pinMode(motor1A, OUTPUT);
-  pinMode(motor2A, OUTPUT);
-  pinMode(motor3A, OUTPUT);
-  pinMode(motor4A, OUTPUT);
-
+  pinMode(LM1, OUTPUT);
+  pinMode(LM2, OUTPUT);
+  pinMode(RM1, OUTPUT);
+  pinMode(RM2, OUTPUT);
 }
 
 void loop() {
@@ -55,21 +54,16 @@ void loop() {
   int right = digitalRead(REYE);
 
   if (left && right) {
-    STOP();
-
+    stop_all();
   }
   if (!left && !right) {
-    AWF();
-
+    move_forward();
   }
 
   if (!left && right) {
-    LWF();
-
+    right_turn();
   }
   if (left && !right) {
-    RWF();
-
+    left_turn();
   }
-
 }
