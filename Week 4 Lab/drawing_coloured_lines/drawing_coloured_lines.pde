@@ -1,3 +1,5 @@
+// Made by Ronan Slattery
+
 int variable = 0;
 void setup(){
   size(800,600);
