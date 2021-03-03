@@ -1,9 +1,9 @@
-#include <WiFiNINA.h> 
+#include <WiFiNINA.h>
 
-char ssid[] = "SKY163C7"; 
-char pass[] = " "; 
+char ssid[] = "SKY163C7";
+char pass[] = " ";
 
-WiFiServer server(80); 
+WiFiServer server(80);
 
 // L293D Connection
 const int LM1 = 17; // LEFT MOTOR 1 = 1A
@@ -12,7 +12,7 @@ const int RM1 = 6;  // RIGHT MOTOR 1 = 3A
 const int RM2 = 12; // RIGHT Motor 2 = 4A
 
 // IR Sensor Connection
-const int LEYE = 2; // LEFT IR SENSOR 
+const int LEYE = 2; // LEFT IR SENSOR
 const int REYE = 11; // RIGHT IR SENSOR
 
 
@@ -52,39 +52,47 @@ void setup() {
   pinMode(RM1, OUTPUT);
   pinMode(RM2, OUTPUT);
 
-  
-  WiFi.begin(ssid, pass); 
-  IPAddress ip = WiFi.localIP(); 
-  Serial.print("IP Address: "); 
-  Serial.println(ip); 
-  server.begin(); 
+
+  WiFi.begin(ssid, pass);
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);
+  server.begin();
 }
 
 void loop() {
-  WiFiClient client = server.available(); 
+  WiFiClient client = server.available();
 
-  if (client.connected()) { 
-    Serial.println("Client Connected"); 
-    char c = client.read(); 
+  if (client.connected()) {
+    Serial.println("Client Connected");
+    char c = client.read();
 
-    if (c == 'S') {
-    stop_all();
-    Serial.println("Stopping the buggy"); 
-    }
-    
-    if (c == 'W'){
-    move_forward();
-    Serial.println("Moving the buggy forward"); 
-    }
+    switch (c) {
+      case 'f':
+        Serial.println("Moving buggy forward");
+        move_forward();
+        break;
 
-    if (c = 'R') {
-    right_turn();
-    Serial.println("Turning the buggy right"); 
-    }
-    
-    if (c = 'L') {
-    left_turn();
-    Serial.println("Turning the buggy left"); 
+      case 'r':
+        Serial.println("Moving buggy backwards");
+        move_backwards();
+        break;
+
+      case 'b' :
+        Serial.println("Turning buggy right");
+        right_turn();
+        break;
+
+      case 'l':
+        Serial.println("Turning buggy left");
+        left_turn();
+        break;
+
+      case 's':
+        Serial.println("Stopping the buggy");
+        stop_all();
+        break;
+
     }
   }
 }
