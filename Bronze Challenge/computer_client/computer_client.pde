@@ -10,12 +10,17 @@ void setup() {
   myClient = new
     Client(this, "ENTER IP ADRESS FROM ARDUINO HERE / DO NOT UPLOAD ON GITLAB", 5200); 
 
-  // GO BUTTON HERE
+  cp5.addButton("go")
+    .setValue(0)
+    .setPosition(10, 80)
+    .setSize(120, 50)
+    ;
 
-
-  // STOP BUTTON HERE
-  
-  
+  cp5.addButton("stop")
+    .setValue(0)
+    .setPosition(270, 80)
+    .setSize(120, 50)
+    ;
 }
 
 void draw() {
