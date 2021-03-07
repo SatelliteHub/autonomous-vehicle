@@ -109,10 +109,15 @@ void loop() {
 
 
         // INSERT HERE THE ULTRASONIC CODE
+        digitalWrite(UST, LOW); 
+        delayMicroseconds(2); 
+        digitalWrite(UST, HIGH); 
+        delayMicroseconds(10); 
+        digitalWrite(UST, LOW); 
+        
+        long duration = pulseIn(USE, HIGH); //Count when USE is high and stops when USE is low
 
-
-
-
+        int distance = duration / 58; 
 
 
         // Detects when obstacle is further 10 cm dist.
@@ -124,7 +129,23 @@ void loop() {
 
 
           // INSERT HERE THE LINE FOLLOWING CODE
+          if (!left && !right) { 
+            move_forward(); 
+          }
+          
+          if (left && right) { 
+            stop_all(); 
+          }
 
+          if (!left && right) {
+            right_turn(); 
+          }
+
+          if (left && !right) { 
+            left_turn(); 
+          }
+          
+          
 
 
 
