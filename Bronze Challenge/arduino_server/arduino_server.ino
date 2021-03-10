@@ -73,8 +73,12 @@ void setup() {
 
 
 
-  // PRINT SSID AND IP ADRESS HERE
 
+  WiFi.begin(ssid, pass);
+  IPAddress ip = WiFi.localIP();
+  Serial.print("IP Adress:");
+  Serial.println(ip);
+  server.begin();
 
 
 }
@@ -86,7 +90,8 @@ void loop() {
 
     /* OPTIONAL: TELL USER WHEN GO BUTTON IS PRESSED
       USING IF STATEMENT */
-
+    client.write ("Client Connected");
+    client.stop();
 
     char c = client.read(); // Read char from Processing
 
@@ -94,7 +99,8 @@ void loop() {
     if (c == 'g') {
       while (c != 's') {
 
-
+        Serial.println ("Go Button Pressed");
+        move_forward();
 
         /* OPTIONAL: TELL USER WHEN GO BUTTON IS PRESSED
           USING IF STATEMENT */
@@ -109,15 +115,15 @@ void loop() {
 
 
         // INSERT HERE THE ULTRASONIC CODE
-        digitalWrite(UST, LOW); 
-        delayMicroseconds(2); 
-        digitalWrite(UST, HIGH); 
-        delayMicroseconds(10); 
-        digitalWrite(UST, LOW); 
-        
+        digitalWrite(UST, LOW);
+        delayMicroseconds(2);
+        digitalWrite(UST, HIGH);
+        delayMicroseconds(10);
+        digitalWrite(UST, LOW);
+
         long duration = pulseIn(USE, HIGH); //Count when USE is high and stops when USE is low
 
-        int distance = duration / 58; 
+        int distance = duration / 58;
 
 
         // Detects when obstacle is further 10 cm dist.
@@ -129,23 +135,23 @@ void loop() {
 
 
           // INSERT HERE THE LINE FOLLOWING CODE
-          if (!left && !right) { 
-            move_forward(); 
+          if (!left && !right) {
+            move_forward();
           }
-          
-          if (left && right) { 
-            stop_all(); 
+
+          if (left && right) {
+            stop_all();
           }
 
           if (!left && right) {
-            right_turn(); 
+            right_turn();
           }
 
-          if (left && !right) { 
-            left_turn(); 
+          if (left && !right) {
+            left_turn();
           }
-          
-          
+
+
 
 
 
@@ -156,6 +162,7 @@ void loop() {
         else if (distance < 10) {
           if (obstacle_seen != 1) {
 
+            Serial.println ("stopping for obstacle at 10cm distance");
 
             // TELEMETRY:
             // PRINT TO PROCESSING CONSOLE THE MESSAGE
@@ -176,6 +183,7 @@ void loop() {
 
     }
     else if (c == 's') {
+      Serial.println ("Stop Button Pressed");
       stop_all();
       // IF OPTIONAL CODE ABOVE IS USED RESET VARIABLE HERE
     }
