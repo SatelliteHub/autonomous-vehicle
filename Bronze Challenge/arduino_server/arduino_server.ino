@@ -99,7 +99,7 @@ void loop() {
     if (c == 'g') {
       while (c != 's') {
 
-        Serial.println ("Go Button Pressed");
+        client.write("Go Button Pressed");
         move_forward();
 
         /* OPTIONAL: TELL USER WHEN GO BUTTON IS PRESSED
@@ -162,7 +162,7 @@ void loop() {
         else if (distance < 10) {
           if (obstacle_seen != 1) {
 
-            Serial.println ("stopping for obstacle at 10cm distance");
+            client.write("stopping for obstacle at 10cm distance");
 
             // TELEMETRY:
             // PRINT TO PROCESSING CONSOLE THE MESSAGE
@@ -183,7 +183,7 @@ void loop() {
 
     }
     else if (c == 's') {
-      Serial.println ("Stop Button Pressed");
+      client.write("Stop Button Pressed");
       stop_all();
       // IF OPTIONAL CODE ABOVE IS USED RESET VARIABLE HERE
     }
