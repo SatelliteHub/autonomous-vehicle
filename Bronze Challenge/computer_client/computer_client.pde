@@ -25,36 +25,24 @@ void setup() {
 
 void draw() {
   background (255, 255, 255);
-
-  // READ STRING FROM ARDUINO AND PLACE IN "data" VARIABLE
-  if (myClient.available() > 0) { 
-    data = myClient.readString(); 
-  }
-
-  // USING IF STATEMENT PRINT DATA RECEIVED FROM ARDUINO
-  if (data != null){
+  data = myClient.readString();
+  if (data != null) {
     println(data);
-  }  
-  
+  }
 }
 
-
+// GO Button
 public void go(int value) {
   if (myClient.active()) {
-
-    // SEND CHARACTER 'g' TO ARDUINO (g STANDS FOR GO)
     myClient.write("g");
-    
+    println("Go Button Pressed");
   }
 }
 
-
-
+// STOP Button
 public void stop(int value) {
   if (myClient.active()) {
-
-    // SEND CHARACTER 's' TO ARDUINO (s STANDS FOR STOP)
     myClient.write("s");
-    
+    println("Stop Button Pressed");
   }
 }
