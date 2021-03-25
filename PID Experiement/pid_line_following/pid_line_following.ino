@@ -105,50 +105,76 @@ void loop() {
   if (left && right) {
     
     // Stop the Vehicle
+    stop_all(); 
     
     if (last_distance != distance) {
-      
       // Print stuff here…
+      Serial.print("Obstace Seen at "); 
+      Serial.print(distance); 
+      Serial.println("cm"); 
+      
       // Assign "distance" to "last_distance"
+      distance = last_distance; 
+      
       // Set 100 ms of delay (for Processing)
+      delay(100); 
       
     }
   }
   if (!left && !right) {
     
     // Move the vehicle forward
+    move_forward(); 
     
     if (last_distance != distance) {
-      
       // Print stuff here…
-      // Assign "distance" to "last_distance"
-      // Set 100 ms of delay (for Processing)
+      Serial.print("Obstace Seen at "); 
+      Serial.print(distance); 
+      Serial.println("cm"); 
       
+      // Assign "distance" to "last_distance"
+      distance = last_distance; 
+      
+      // Set 100 ms of delay (for Processing)
+      delay(100); 
     }
   }
 
   if (!left && right) {
     
     // Turn the vehicle right
+    right_turn(); 
     
     if (last_distance != distance) {
-      
       // Print stuff here…
-      // Assign "distance" to "last_distance"
-      // Set 100 ms of delay (for Processing)
+      Serial.print("Obstace Seen at "); 
+      Serial.print(distance); 
+      Serial.println("cm"); 
       
+      // Assign "distance" to "last_distance"
+      distance = last_distance; 
+      
+      // Set 100 ms of delay (for Processing)
+      delay(100); 
+   
     }
   }
   if (left && !right) {
     
     // Turn the vehicle left
-    
+    left_turn(); 
     if (last_distance != distance) {
       
       // Print stuff here…
-      // Assign "distance" to "last_distance"
-      // Set 100 ms of delay (for Processing)
+      Serial.print("Obstace Seen at "); 
+      Serial.print(distance); 
+      Serial.println("cm"); 
       
+      // Assign "distance" to "last_distance"
+      distance = last_distance; 
+      
+      // Set 100 ms of delay (for Processing)
+      delay(100); 
     }
   }
 }
