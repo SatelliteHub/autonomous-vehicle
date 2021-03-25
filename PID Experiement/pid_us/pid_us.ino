@@ -1,3 +1,4 @@
+
 //**************************************************************//
 //  For Convenience install "PID" Library by Brett Beauregard   //
 //**************************************************************//
@@ -10,7 +11,7 @@ double input; // US Sensor
 double output; // Motor
 
 // Insert Here PID Parameters (More info in the Lectures/Need testing)
-double Kp = XXXXX, Ki = XXXXX, Kd = XXXXX;
+double Kp = 50, Ki = 5, Kd = 1;
 
 // Specify the links and initial tuning parameters
 PID myPID(&input, &output, &setpoint, Kp, Ki, Kd, DIRECT);
@@ -34,9 +35,9 @@ const int USE = 10;
 void setup() {
   Serial.begin(9600);
 
-  setpoint = XXXXXXXXXXXXX; // Insert here Distance to activate PID
+  setpoint = 12; // Insert here Distance to activate PID
   myPID.SetMode(AUTOMATIC); // Turn PID On
-  
+
 
   pinMode(UST, OUTPUT);
   pinMode(USE, INPUT);
@@ -48,10 +49,28 @@ void loop() {
 
   // Paste Here Only Ultrasonic Code from Bronze Demo
 
+  digitalWrite(UST, LOW);
+  delayMicroseconds(2);
+  digitalWrite(UST, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(UST, LOW);
+
+  float duration = pulseIn(USE, HIGH);
+
+  int distance = duration / 58;
+
   input = distance;
   myPID.Compute(); // Compute PID
-
-  // Print the corresponding Output HERE
   
+   // Print the corresponding Output HERE 
+   Serial.println(255 - output);
+
   // Analog Write here each motors using the Output HERE
+
+  analogWrite (LM1, 255 - output);
+  analogWrite (LM2, 0);
+  analogWrite (RM1, 255 - output);
+  analogWrite (RM2, 0);
+ 
+
 }
