@@ -114,7 +114,7 @@ void loop() {
       Serial.println("cm"); 
       
       // Assign "distance" to "last_distance"
-      distance = last_distance; 
+      last_distance = distance; 
       
       // Set 100 ms of delay (for Processing)
       delay(100); 
@@ -133,7 +133,7 @@ void loop() {
       Serial.println("cm"); 
       
       // Assign "distance" to "last_distance"
-      distance = last_distance; 
+      last_distance = distance; 
       
       // Set 100 ms of delay (for Processing)
       delay(100); 
@@ -152,7 +152,7 @@ void loop() {
       Serial.println("cm"); 
       
       // Assign "distance" to "last_distance"
-      distance = last_distance; 
+      last_distance = distance; 
       
       // Set 100 ms of delay (for Processing)
       delay(100); 
@@ -171,7 +171,7 @@ void loop() {
       Serial.println("cm"); 
       
       // Assign "distance" to "last_distance"
-      distance = last_distance; 
+      last_distance = distance; 
       
       // Set 100 ms of delay (for Processing)
       delay(100); 
