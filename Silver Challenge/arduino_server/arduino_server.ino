@@ -1,9 +1,22 @@
 #include <WiFiNINA.h>
+#include <PID_v1.h> // PID Library by Brett Beauregard
 
 // Wi-Fi Connection ****** SECURITY WARNING ******
 char ssid[] = " "; // DO NOT UPLOAD SSID ON GITLAB
 char pass[] = " "; // DO NOT UPLOAD PASSWORD ON GITLAB
 WiFiServer server(5200);
+
+
+// Define Variables we'll be connecting to
+double setpoint; // Desired Value
+double input; // US Sensor
+double output; // Motor
+
+// Insert Here PID Parameters (More info in the Lectures/Need testing)
+double Kp = 50, Ki = 5, Kd = 1;
+
+// Specify the links and initial tuning parameters
+PID myPID(&input, &output, &setpoint, Kp, Ki, Kd, DIRECT);
 
 // L293D Connection
 const int LM1 = 17;
@@ -21,23 +34,23 @@ const int USE = 10;
 
 
 int right_turn() { // TURN RIGHT
-  analogWrite(LM1, 255);
+  analogWrite(LM1, 255 - output);
   analogWrite(LM2, 0);
   analogWrite(RM1, 0);
-  analogWrite(RM2, 155);
+  analogWrite(RM2, 0);
 }
 
 int left_turn() { // TURN LEFT
   analogWrite(LM1, 0);
-  analogWrite(LM2, 155);
-  analogWrite(RM1, 255);
+  analogWrite(LM2, 0);
+  analogWrite(RM1, 255 - output);
   analogWrite(RM2, 0);
 }
 
 int move_forward() { // MOVE STRAIGHT
-  analogWrite(LM1, 255);
+  analogWrite(LM1, 255 - output);
   analogWrite(LM2, 0);
-  analogWrite(RM1, 255);
+  analogWrite(RM1, 255 - output);
   analogWrite(RM2, 0);
 }
 
@@ -48,12 +61,16 @@ int stop_all() { // STOP BUGGY
   analogWrite(RM2, 0);
 }
 
+int last_distance;
 int obstacle_seen; // For Message when Obstacle is seen
 int last_connected; // For Message for Last Connection
 int go_button_state; // For Message when Go But. is H/L
 
 void setup() {
   Serial.begin(9600);
+
+  setpoint = 12; // Insert here Distance to activate PID
+  myPID.SetMode(AUTOMATIC); // Turn PID On
 
   pinMode(LEYE, INPUT);
   pinMode(REYE, INPUT);
@@ -106,6 +123,13 @@ void loop() {
         // Count when USE is HIGH and stop when USE is low
 
         int distance = duration / 58;
+  
+         input = distance;
+         myPID.Compute(); // Compute PID
+  
+        // Print the corresponding Output HERE 
+        // Serial.println(255 - output);
+
         
         // Detects when obstacle is further 10 cm dist.
         if (distance > 10) {
@@ -115,6 +139,8 @@ void loop() {
             if (obstacle_seen != 0) {
               client.write("No Obstacle\n");
               obstacle_seen = 0;
+              // Assign "distance" to "last_distance"
+              last_distance = distance; 
               delay(100);
             }
           }
@@ -123,6 +149,8 @@ void loop() {
             if (obstacle_seen != 0) {
               client.write("No Obstacle\n");
               obstacle_seen = 0;
+              // Assign "distance" to "last_distance"
+              last_distance = distance; 
               delay(100);
             }
 
@@ -132,6 +160,8 @@ void loop() {
             if (obstacle_seen != 0) {
               client.write("No Obstacle\n");
               obstacle_seen = 0;
+              // Assign "distance" to "last_distance"
+              last_distance = distance; 
               delay(100);
             }
           }
@@ -140,6 +170,8 @@ void loop() {
             if (obstacle_seen != 0) {
               client.write("No Obstacle\n");
               obstacle_seen = 0;
+              // Assign "distance" to "last_distance"
+              last_distance = distance; 
               delay(100);
             }
           }
@@ -150,6 +182,8 @@ void loop() {
             //Serial.println("Stopping for Obstacle at 10cm Distance");
             client.write("Stopping for Obstacle at 10cm Distance\n");
             obstacle_seen = 1;
+            // Assign "distance" to "last_distance"
+            last_distance = distance; 
             delay(100);
           }
           stop_all();
