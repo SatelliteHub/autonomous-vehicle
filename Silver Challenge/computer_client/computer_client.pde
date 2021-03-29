@@ -4,6 +4,8 @@ ControlP5 cp5;
 Client myClient;
 String data;
 String last_data = " ";
+int distance;
+int last_distance;
 byte buffer = 10;
 
 void setup() {
@@ -29,14 +31,29 @@ void draw() {
   background (255, 255, 255);
 
   fill(0, 102, 153);
+  distance = myClient.read();
+  textSize(20);
+  textAlign(LEFT);
+  text("Distance: ", 10, 30);
+  textAlign(RIGHT);
+  text(last_distance, 130, 30);
+  text(" cm", 170, 30);
   data = myClient.readStringUntil(buffer);
   textSize(20);
   textAlign(CENTER);
   text(last_data, 200, 180); // Printing in the GUI
 
-  if (data != null) {
-    println(data); // Diagnostic Printing in the Console
-    last_data = data;
+  if (distance != -1) {
+    if (distance <= 12 && distance != 0) {
+      last_distance = distance;
+      println(last_distance); // Diagnostic Printing in the Console
+      last_data = "Obstacle in Proximity";
+    } 
+    else {
+      last_distance = distance;
+      last_data = " ";
+    }
+    println(last_data);
   }
 }
 
