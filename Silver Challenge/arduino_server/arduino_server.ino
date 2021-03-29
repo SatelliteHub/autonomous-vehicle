@@ -64,6 +64,7 @@ int distance; // Distance between the Obstacle and Vehicle
 int last_distance; // Last Recorded Distance
 int last_connected; // Message for Last Connection
 int go_button_state; // Message when Go But. is H/L
+int counter; // Message Delay w/o affecting Actions
 
 void setup() {
   Serial.begin(9600);
@@ -98,7 +99,7 @@ void loop() {
       last_connected = 1;
     }
     char c = client.read();
-    
+
     // 'g' for GO command and 's' for STOP command
     if (c == 'g') {
       while (c != 's') {
@@ -127,36 +128,51 @@ void loop() {
 
         if (left && right) {
           stop_all();
+          delay(10);
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            Serial.println(last_distance);
-            delay(100);
+            counter = (counter + 1) % 100;
+            if (counter == 0 ) {
+              Serial.println(last_distance);
+            }
           }
         }
         if (!left && !right) {
           move_forward();
+          delay(10);
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            delay(100);
+            counter = (counter + 1) % 100;
+            if (counter == 0 ) {
+              Serial.println(last_distance);
+            }
           }
         }
 
         if (!left && right) {
           right_turn();
+          delay(10);
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            delay(100);
+            counter = (counter + 1) % 100;
+            if (counter == 0 ) {
+              Serial.println(last_distance);
+            }
           }
         }
         if (left && !right) {
           left_turn();
+          delay(10);
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            delay(100);
+            counter = (counter + 1) % 100;
+            if (counter == 0 ) {
+              Serial.println(last_distance);
+            }
           }
         }
         c = client.read();
