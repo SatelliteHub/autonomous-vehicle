@@ -62,9 +62,6 @@ int stop_all() { // STOP BUGGY
 
 int distance; // Distance between the Obstacle and Vehicle
 int last_distance; // Last Recorded Distance
-int last_connected; // Message for Last Connection
-int go_button_state; // Message when Go But. is H/L
-int counter; // Message Delay w/o affecting Actions
 
 void setup() {
   Serial.begin(9600);
@@ -94,24 +91,17 @@ void setup() {
 void loop() {
   WiFiClient client = server.available();
   if (client.connected()) {
-    if (last_connected != 1) {
-      //client.write("Client Connected\n");
-      last_connected = 1;
-    }
     char c = client.read();
 
     // 'g' for GO command and 's' for STOP command
     if (c == 'g') {
       while (c != 's') {
-        if (go_button_state != 1) {
-          //client.write("GO");
-          go_button_state = 1;
-        }
 
-        // Ultrasonic
+        // IR Sensor        
         int left = digitalRead(LEYE);
         int right = digitalRead(REYE);
 
+        // Ultrasonic Sensor
         digitalWrite(UST, LOW);
         delayMicroseconds(2);
         digitalWrite(UST, HIGH);
@@ -132,10 +122,6 @@ void loop() {
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            counter = (counter + 1) % 100;
-            if (counter == 0 ) {
-              Serial.println(last_distance);
-            }
           }
         }
         if (!left && !right) {
@@ -144,10 +130,6 @@ void loop() {
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            counter = (counter + 1) % 100;
-            if (counter == 0 ) {
-              Serial.println(last_distance);
-            }
           }
         }
 
@@ -157,10 +139,6 @@ void loop() {
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            counter = (counter + 1) % 100;
-            if (counter == 0 ) {
-              Serial.println(last_distance);
-            }
           }
         }
         if (left && !right) {
@@ -169,10 +147,6 @@ void loop() {
           if (last_distance != distance) {
             client.write(distance);
             last_distance = distance;
-            counter = (counter + 1) % 100;
-            if (counter == 0 ) {
-              Serial.println(last_distance);
-            }
           }
         }
         c = client.read();
@@ -180,15 +154,11 @@ void loop() {
       stop_all();
       distance = 0;
       client.write(distance);
-      go_button_state = 0;
-      last_connected = 1;
     }
     else if (c == 's') {
       stop_all();
       distance = 0;
       client.write(distance);
-      go_button_state = 0;
-      last_connected = 1;
     }
   }
 }
