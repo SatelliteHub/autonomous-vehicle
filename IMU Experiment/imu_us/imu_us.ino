@@ -24,8 +24,10 @@ void loop() {
   float aX, aY, aZ;
   float gX, gY, gZ;
   const char * spacer = ", ";
+  
   long duration = 0;
   int distance = 0;
+  
   if (IMU.accelerationAvailable() && IMU.gyroscopeAvailable()) {
     IMU.readAcceleration(aX, aY, aZ);
     IMU.readGyroscope(gX, gY, gZ);
@@ -45,7 +47,6 @@ void loop() {
     digitalWrite(UST, HIGH);
     delayMicroseconds(10);
     digitalWrite(UST, LOW);
-    delay (1000);
     
     duration = pulseIn(USE, HIGH);
     distance = duration / 58;
