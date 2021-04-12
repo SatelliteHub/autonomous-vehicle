@@ -9,7 +9,7 @@ const int LEYE = 2;
 const int REYE = 11;
 
 // Ultrasonic Connection
-const int UST = 19;
+const int UST = 15;
 const int USE = 10;
 
 int right_turn() { // LEFT WHEEL FORWARD
