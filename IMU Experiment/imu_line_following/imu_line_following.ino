@@ -37,14 +37,6 @@ int stop_all() { // STOP BUGGY
 }
 
 void setup() {
-  pinMode(LEYE, INPUT);
-  pinMode(REYE, INPUT);
-
-  pinMode(LM1, OUTPUT);
-  pinMode(LM2, OUTPUT);
-  pinMode(RM1, OUTPUT);
-  pinMode(RM2, OUTPUT);
-
   Serial.begin(9600);
   while (!Serial) {
     ; // wait for serial port to connect. Needed for native USB port only
@@ -54,6 +46,14 @@ void setup() {
     while (true); // halt program
   }
   Serial.println("IMU initialized!");
+  
+  pinMode(LEYE, INPUT);
+  pinMode(REYE, INPUT);
+
+  pinMode(LM1, OUTPUT);
+  pinMode(LM2, OUTPUT);
+  pinMode(RM1, OUTPUT);
+  pinMode(RM2, OUTPUT);
 }
 
 void loop() {
