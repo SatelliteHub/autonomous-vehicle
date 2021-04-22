@@ -81,9 +81,9 @@ void setup() {
   pinMode(USE, INPUT);
 
   Serial.begin(9600);
-  while (!Serial) {
-    Serial.println("LSM6DS3 IMU initialization…");
-  }
+//  while (!Serial) {
+//    Serial.println("LSM6DS3 IMU initialization…");
+//  }
   if (!IMU.begin()) {
     Serial.println("Failed to initialize IMU!");
     while (true); // halt program
@@ -115,6 +115,9 @@ void loop() {
         float aX, aY, aZ;
         float gX, gY, gZ;
         const char * spacer = ", ";
+
+        float vX, vY, vZ;
+        int dt = 10;
       
         // IR Sensor
         int left = digitalRead(LEYE);
