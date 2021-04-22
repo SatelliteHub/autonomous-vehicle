@@ -143,7 +143,7 @@ void loop() {
         // Calculate the velocity from IMU
         vX = abs(aX * dt);
         vY = abs(aY * dt);
-        v = (100 * sqrt(vX * vX + vY * vY)) - 20;
+        v = (100 * sqrt(vX * vX + vY * vY)) - 40;
 
         // Diagnosis with the Serial Monitor
         if (v <= 20) {
